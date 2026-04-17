@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --color-spa-beige: #fefcf9;
+  --color-spa-blush: #f4e8e1;
+  --color-spa-blush-dark: #e6cec0;
+  --color-spa-gold: #c8a97e;
+  --color-spa-gold-dark: #a98555;
+  --color-spa-dark: #2c2c2c;
+  --color-spa-gray: #f7f5f2;
+  --color-spa-border: #e8e3dc;
+  --font-sans: var(--font-outfit), sans-serif;
+  
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.4s ease-out;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+:root {
+  --background: var(--color-spa-beige);
+  --foreground: var(--color-spa-dark);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hide scrollbar for clean aesthetic */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-spa-border);
+  border-radius: 10px;
+}
