@@ -9,182 +9,192 @@ export type Question = {
   id: string;
   title: string;
   options: Option[];
-  dependency?: { questionId: string; value: string };
+  allowMultiple?: boolean;
 }
 
 export const questions: Question[] = [
   {
-    id: "q1_gender",
-    title: "How do you identify?",
+    id: "q1_goal",
+    title: "1. What’s your dream beauty result?",
     options: [
-      { id: "female", label: "Female", iconName: "Venus" },
-      { id: "male", label: "Male", iconName: "Mars" },
-      { id: "other", label: "Other", iconName: "User" } // Map 'other' to standard flow if needed
+      { id: "frizz_free", label: "Frizz-free & smooth hair", iconName: "Sparkles" },
+      { id: "thicker_hair", label: "Thicker, fuller hair", iconName: "Layers" },
+      { id: "healthier_hair", label: "Healthier, shinier hair", iconName: "Sun" },
+      { id: "glowing_skin", label: "Glowing skin", iconName: "SunDim" },
+      { id: "acne_free", label: "Acne-free skin", iconName: "CloudSun" },
+      { id: "younger_skin", label: "Younger-looking skin", iconName: "Clock" },
+      { id: "relaxation", label: "Relaxation & stress relief", iconName: "Leaf" },
+      { id: "bridal", label: "Bridal / event-ready look", iconName: "Camera" },
+      { id: "low_maintenance", label: "Low-maintenance routine", iconName: "Coffee" }
     ]
   },
   {
-    id: "q2_age",
-    title: "What is your age range?",
+    id: "q2_frustrations",
+    title: "2. What’s frustrating you the most right now?",
+    allowMultiple: true,
     options: [
-      { id: "under25", label: "Under 25", iconName: "BatteryFull" },
-      { id: "25-35", label: "25 - 35", iconName: "BatteryMedium" },
-      { id: "36-45", label: "36 - 45", iconName: "BatteryLow" },
-      { id: "45+", label: "45+", iconName: "BatteryWarning" }
+      { id: "frizzy_hair", label: "Frizzy hair", iconName: "CloudLightning" },
+      { id: "hair_fall", label: "Hair fall / thinning", iconName: "TrendingDown" },
+      { id: "damaged_hair", label: "Dry or damaged hair", iconName: "Zap" },
+      { id: "split_ends", label: "Split ends", iconName: "Scissors" },
+      { id: "oily_scalp", label: "Oily scalp", iconName: "Droplet" },
+      { id: "dull_skin", label: "Dull skin", iconName: "CloudFog" },
+      { id: "acne", label: "Acne / breakouts", iconName: "AlertCircle" },
+      { id: "dark_circles", label: "Dark circles", iconName: "Eye" },
+      { id: "pigmentation", label: "Pigmentation", iconName: "Target" },
+      { id: "stress", label: "Stress / body pain", iconName: "Activity" },
+      { id: "brittle_nails", label: "Brittle nails", iconName: "Hand" },
+      { id: "no_time", label: "Lack of time for self-care", iconName: "TimerOff" }
     ]
   },
   {
-    id: "q3_skintype",
-    title: "How does your skin instinctively feel by midday?",
+    id: "q3_hair_type",
+    title: "3. What type of hair do you have?",
     options: [
-      { id: "oily", label: "Oily & Shiny", iconName: "Droplet" },
-      { id: "dry", label: "Tight & Patchy", iconName: "Wind" },
-      { id: "normal", label: "Balanced", iconName: "CheckCircle" },
-      { id: "sensitive", label: "Red & Reactive", iconName: "AlertCircle" }
+      { id: "straight", label: "Straight", iconName: "AlignJustify" },
+      { id: "wavy", label: "Wavy", iconName: "Waves" },
+      { id: "curly", label: "Curly", iconName: "Infinity" },
+      { id: "coily", label: "Coily", iconName: "CircleDot" },
+      { id: "fine", label: "Fine / Thin", iconName: "Minus" },
+      { id: "thick", label: "Thick / Dense", iconName: "Layers3" },
+      { id: "chemically_treated", label: "Chemically treated", iconName: "FlaskConical" },
+      { id: "color_treated", label: "Color-treated", iconName: "Palette" }
     ]
   },
   {
-    id: "q4_female_skin_problem",
-    title: "What is your primary clinical skin concern?",
-    dependency: { questionId: "q1_gender", value: "female" },
+    id: "q4_skin_type",
+    title: "4. What type of skin do you have?",
     options: [
-      { id: "hormonal_acne", label: "Hormonal Breakouts", iconName: "Target" },
-      { id: "melasma", label: "Pigmentation / Melasma", iconName: "SunDim" },
-      { id: "fine_lines", label: "Fine Lines & Laxity", iconName: "TrendingDown" },
-      { id: "dullness", label: "Dullness & Uneven Tone", iconName: "CloudFog" }
+      { id: "dry", label: "Dry", iconName: "Wind" },
+      { id: "oily", label: "Oily", iconName: "Droplet" },
+      { id: "combination", label: "Combination", iconName: "CircleDashed" },
+      { id: "sensitive", label: "Sensitive", iconName: "AlertCircle" },
+      { id: "acne_prone", label: "Acne-prone", iconName: "Target" },
+      { id: "mature", label: "Mature / Aging", iconName: "History" }
     ]
   },
   {
-    id: "q4_male_skin_problem",
-    title: "What is your primary clinical skin or beard concern?",
-    dependency: { questionId: "q1_gender", value: "male" },
+    id: "q5_time",
+    title: "5. How much time do you spend getting ready each day?",
     options: [
-      { id: "razor_bumps", label: "Razor Bumps & Ingrowns", iconName: "Scissors" },
-      { id: "oily_pores", label: "Oily T-Zone & Enlarged Pores", iconName: "Focus" },
-      { id: "beard_dandruff", label: "Beard Dandruff / Itch", iconName: "Snowflake" },
-      { id: "uneven_tone", label: "Uneven Tone & Tan", iconName: "Sun" }
+      { id: "under_10", label: "Under 10 minutes", iconName: "Clock1" },
+      { id: "10_20", label: "10–20 minutes", iconName: "Clock3" },
+      { id: "20_40", label: "20–40 minutes", iconName: "Clock6" },
+      { id: "over_40", label: "Over 40 minutes", iconName: "Clock9" }
     ]
   },
   {
-    id: "q5_hair_concern",
-    title: "How would you diagnose your hair health right now?",
+    id: "q6_experience",
+    title: "6. What kind of salon experience are you looking for?",
     options: [
-      { id: "hairfall", label: "Excessive Shedding / Fall", iconName: "TrendingDown" },
-      { id: "thinning", label: "Pattern Thinning", iconName: "Minimize2" },
-      { id: "damaged", label: "Brittle & Damaged", iconName: "Zap" },
-      { id: "scalp_issues", label: "Scalp Sensitivities", iconName: "Activity" }
+      { id: "quick_maintenance", label: "Quick maintenance", iconName: "Zap" },
+      { id: "problem_solving", label: "Problem-solving treatment", iconName: "Stethoscope" },
+      { id: "luxury", label: "Luxury self-care day", iconName: "Gem" },
+      { id: "bridal_prep", label: "Bridal / special event prep", iconName: "Camera" },
+      { id: "trendy", label: "Trendy new look", iconName: "Star" },
+      { id: "relaxing", label: "Relaxing spa visit", iconName: "Leaf" }
     ]
   },
   {
-    id: "q6_past_treatments",
-    title: "Have you recently undergone any clinical treatments?",
+    id: "q7_services",
+    title: "7. Which services are you most interested in?",
+    allowMultiple: true,
     options: [
-      { id: "yes_skin", label: "Yes - Lasers or Chemical Peels", iconName: "Stethoscope" },
-      { id: "yes_hair", label: "Yes - Chemical Hair Services", iconName: "FlaskConical" },
-      { id: "none", label: "None Previously", iconName: "CircleSlash" },
-      { id: "exploring", label: "No, but actively exploring", iconName: "Search" }
+      { id: "hair_spa", label: "Hair Spa", iconName: "Droplet" },
+      { id: "hair_botox", label: "Hair Botox", iconName: "Sparkles" },
+      { id: "keratin", label: "Keratin / Smoothing", iconName: "Scissors" },
+      { id: "scalp", label: "Scalp Treatment", iconName: "Activity" },
+      { id: "hair_color", label: "Hair Color", iconName: "Palette" },
+      { id: "facial", label: "Facial", iconName: "SunDim" },
+      { id: "hydrafacial", label: "HydraFacial", iconName: "Droplets" },
+      { id: "mani_pedi", label: "Manicure / Pedicure", iconName: "Hand" },
+      { id: "massage", label: "Massage Therapy", iconName: "Flower2" },
+      { id: "makeup", label: "Bridal Makeup", iconName: "Brush" },
+      { id: "lashes", label: "Lash Extensions", iconName: "Eye" },
+      { id: "brows", label: "Brow Shaping", iconName: "Minus" }
     ]
   },
   {
-    id: "q7_lifestyle",
-    title: "What represents your primary environmental stressor?",
+    id: "q8_premium",
+    title: "8. Which premium experience would you love to try?",
     options: [
-      { id: "sun_pollution", label: "High UV & Urban Pollution", iconName: "Smog" },
-      { id: "ac_indoors", label: "Continuous A/C & Indoor Dryness", iconName: "ThermometerSnowflake" },
-      { id: "screen_time", label: "High Screen Time (Blue Light)", iconName: "Monitor" },
-      { id: "stress", label: "High Occupational Stress", iconName: "BrainCircuit" }
+      { id: "japanese_spa", label: "Japanese Head Spa", iconName: "Flower2" },
+      { id: "hair_botox_premium", label: "Hair Botox", iconName: "Sparkles" },
+      { id: "glass_skin", label: "Glass Skin Facial", iconName: "Sun" },
+      { id: "luxury_pedicure", label: "Luxury Pedicure", iconName: "Hand" },
+      { id: "cbd_massage", label: "CBD Massage", iconName: "Leaf" },
+      { id: "aroma_massage", label: "Aromatherapy Massage", iconName: "Wind" },
+      { id: "led_therapy", label: "LED Light Therapy", iconName: "SunMedium" },
+      { id: "cryo_facial", label: "Cryotherapy Facial", iconName: "Snowflake" },
+      { id: "scalp_detox", label: "Scalp Detox Treatment", iconName: "RefreshCcw" }
     ]
   },
   {
-    id: "q8_goal",
-    title: "What is the targeted objective for your next salon visit?",
+    id: "q9_event",
+    title: "9. Do you have a special event coming up?",
     options: [
-      { id: "clinical_correction", label: "Deep Clinical Correction", iconName: "Activity" },
-      { id: "event_glow", label: "Pre-Event Radiance / Glow", iconName: "Sparkles" },
-      { id: "deep_relaxation", label: "Detoxification & Relaxation", iconName: "Leaf" },
-      { id: "maintenance", label: "Routine Maintenance", iconName: "Repeat" }
-    ]
-  },
-    {
-    id: "q9_scalp_type",
-    title: "How would you describe your scalp type?",
-    options: [
-      { id: "oily_scalp", label: "Oily", iconName: "Droplet" },
-      { id: "dry_scalp", label: "Dry", iconName: "Wind" },
-      { id: "normal_scalp", label: "Normal", iconName: "CheckCircle" },
-      { id: "sensitive_scalp", label: "Sensitive", iconName: "AlertCircle" }
+      { id: "wedding", label: "Wedding", iconName: "Heart" },
+      { id: "vacation", label: "Vacation", iconName: "Plane" },
+      { id: "birthday", label: "Birthday", iconName: "Cake" },
+      { id: "festival", label: "Festival / Party", iconName: "Music" },
+      { id: "date", label: "Date night", iconName: "GlassWater" },
+      { id: "office", label: "Office event", iconName: "Briefcase" },
+      { id: "none", label: "No special event", iconName: "CircleSlash" }
     ]
   },
   {
-    id: "q10_makeup_usage",
-    title: "How often do you wear makeup?",
+    id: "q10_budget",
+    title: "10. What’s your budget for your ideal salon visit?",
     options: [
-      { id: "never_makeup", label: "Never", iconName: "CircleSlash" },
-      { id: "occasionally_makeup", label: "Occasionally", iconName: "Brush" },
-      { id: "frequently_makeup", label: "Frequently", iconName: "Palette" },
-      { id: "daily_makeup", label: "Daily", iconName: "Sparkles" }
+      { id: "under_1000", label: "Under ₹1,000", iconName: "Wallet" },
+      { id: "1000_2500", label: "₹1,000–₹2,500", iconName: "CreditCard" },
+      { id: "2500_5000", label: "₹2,500–₹5,000", iconName: "IndianRupee" },
+      { id: "5000_10000", label: "₹5,000–₹10,000", iconName: "Banknote" },
+      { id: "over_10000", label: "₹10,000+", iconName: "Gem" }
     ]
   },
   {
-    id: "q11_beard_type",
-    title: "What best describes your beard style?",
-    dependency: { questionId: "q1_gender", value: "male" },
+    id: "q11_perk",
+    title: "11. Which extra perk would make your salon visit even better?",
+    allowMultiple: true,
     options: [
-      { id: "clean_shaven", label: "Clean Shaven", iconName: "Circle" },
-      { id: "light_beard", label: "Light Beard", iconName: "Minus" },
-      { id: "medium_beard", label: "Medium Beard", iconName: "AlignCenter" },
-      { id: "thick_beard", label: "Thick Beard", iconName: "Layers3" }
+      { id: "massage", label: "Complimentary scalp massage", iconName: "Hand" },
+      { id: "skin_analysis", label: "Free skin analysis", iconName: "Search" },
+      { id: "loyalty", label: "Loyalty rewards", iconName: "Gift" },
+      { id: "membership", label: "Membership discounts", iconName: "Percent" },
+      { id: "coffee", label: "Free coffee / refreshments", iconName: "Coffee" },
+      { id: "products", label: "Product recommendations", iconName: "Package" },
+      { id: "home_kit", label: "At-home care kit", iconName: "Home" },
+      { id: "photos", label: "Before & after photos", iconName: "Camera" },
+      { id: "vip", label: "VIP priority booking", iconName: "Star" }
     ]
   },
   {
-    id: "q12_treatment_duration",
-    title: "How much time can you usually dedicate to treatments?",
+    id: "q12_addon",
+    title: "12. Which add-on would you most likely buy after your appointment?",
     options: [
-      { id: "under_30", label: "Under 30 mins", iconName: "Timer" },
-      { id: "30_60", label: "30–60 mins", iconName: "Clock3" },
-      { id: "1_2_hours", label: "1–2 hours", iconName: "Clock6" },
-      { id: "full_day", label: "Full Day", iconName: "CalendarDays" }
+      { id: "hair_care_kit", label: "Hair care kit after smoothing", iconName: "Package" },
+      { id: "hair_serum", label: "Hair growth serum", iconName: "Droplet" },
+      { id: "exfoliant", label: "Exfoliant after facial", iconName: "Sparkles" },
+      { id: "nail_kit", label: "Nail care set after manicure", iconName: "Hand" },
+      { id: "home_spa", label: "Home spa kit", iconName: "Home" },
+      { id: "silk_pillow", label: "Silk pillowcase", iconName: "Moon" },
+      { id: "travel", label: "Travel-size beauty essentials", iconName: "Plane" },
+      { id: "membership", label: "Premium spa membership", iconName: "BadgeCheck" },
+      { id: "membership_plus", label: "Premium membership + branded bathing suit", iconName: "Gem" }
     ]
   },
   {
-    id: "q13_ambience",
-    title: "What kind of salon atmosphere do you prefer?",
+    id: "q13_motivate",
+    title: "13. What would motivate you to book today?",
     options: [
-      { id: "luxury", label: "Luxury", iconName: "Gem" },
-      { id: "relaxing", label: "Relaxing", iconName: "Leaf" },
-      { id: "quick_service", label: "Quick Service", iconName: "Zap" },
-      { id: "premium_clinical", label: "Premium Clinical", iconName: "Stethoscope" },
-      { id: "budget_friendly", label: "Budget Friendly", iconName: "Wallet" }
-    ]
-  },
-  {
-    id: "q14_treatment_time",
-    title: "When do you usually prefer salon appointments?",
-    options: [
-      { id: "morning", label: "Morning", iconName: "Sunrise" },
-      { id: "afternoon", label: "Afternoon", iconName: "Sun" },
-      { id: "evening", label: "Evening", iconName: "Moon" },
-      { id: "weekend_only", label: "Weekend Only", iconName: "CalendarRange" }
-    ]
-  },
-  {
-    id: "q15_service_type",
-    title: "Which service category interests you the most?",
-    options: [
-      { id: "skincare", label: "Skincare", iconName: "Sparkles" },
-      { id: "haircare", label: "Haircare", iconName: "Scissors" },
-      { id: "spa_massage", label: "Spa / Massage", iconName: "Flower2" },
-      { id: "nail_care", label: "Nail Care", iconName: "Hand" },
-      { id: "makeup", label: "Makeup", iconName: "Brush" },
-      { id: "full_package", label: "Full Package", iconName: "Package" }
-    ]
-  },
-  {
-    id: "q16_membership",
-    title: "Would you be interested in monthly salon memberships?",
-    options: [
-      { id: "membership_yes", label: "Yes", iconName: "BadgeCheck" },
-      { id: "membership_no", label: "No", iconName: "CircleSlash" },
-      { id: "membership_maybe", label: "Maybe", iconName: "HelpCircle" }
+      { id: "free_consult", label: "Free consultation", iconName: "MessageCircle" },
+      { id: "first_visit", label: "First visit discount", iconName: "Percent" },
+      { id: "free_addon", label: "Free add-on service", iconName: "Gift" },
+      { id: "personalized", label: "Personalized recommendation", iconName: "Star" },
+      { id: "vip_offer", label: "VIP membership offer", iconName: "Crown" },
+      { id: "limited_time", label: "Limited-time package", iconName: "Clock" },
+      { id: "free_sample", label: "Free product sample", iconName: "PackageOpen" }
     ]
   }
 ];

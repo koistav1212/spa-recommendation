@@ -11,12 +11,12 @@ type Step = "welcome" | "quiz" | "lead" | "result";
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState<Step>("welcome");
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [result, setResult] = useState<RecommendationResult | null>(null);
 
   const handleStart = () => setCurrentStep("quiz");
 
-  const handleQuizComplete = (quizAnswers: Record<string, string>) => {
+  const handleQuizComplete = (quizAnswers: Record<string, string | string[]>) => {
     setAnswers(quizAnswers);
     setCurrentStep("lead");
   };

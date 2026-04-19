@@ -1,14 +1,21 @@
-export type Treatment = {
+export type SalonPackage = {
+  id: string;
+  name: string;
+  subtitle: string;
+  duration: string;
+  price: string;
+  imageUrl: string;
+  tags: string[];
+};
+
+export type PremiumUpgrade = {
   id: string;
   name: string;
   benefit: string;
-  duration: string;
   price: string;
-  bestFor: string;
-  badge?: string;
   imageUrl: string;
-  tags: string[]; // For engine matching: e.g. "acne", "hair fall", etc.
-}
+  tags: string[];
+};
 
 export type Product = {
   id: string;
@@ -17,104 +24,98 @@ export type Product = {
   bestFor: string;
   price: string;
   imageUrl: string;
-  routine: "morning" | "evening" | "weekly";
-}
+  tags: string[];
+};
+
+export type AddOn = {
+  id: string;
+  name: string;
+  benefit: string;
+  price: string;
+  imageUrl: string;
+  tags: string[];
+};
+
+export type Membership = {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  perks: string[];
+  imageUrl: string;
+};
+
+export type LimitedOffer = {
+  id: string;
+  title: string;
+  description: string;
+  code: string;
+};
 
 // Guaranteed valid Unsplash IDs for a luxury spa theme
-export const treatments: Treatment[] = [
+export const packages: SalonPackage[] = [
   {
-    id: "t1",
-    name: "Hydra Glow Facial",
-    benefit: "Deep hydration and luminous glow",
-    duration: "45 mins",
-    price: "₹2,500",
-    bestFor: "Dry / Dull Skin",
-    badge: "Popular",
-    imageUrl: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=800",
-    tags: ["glowingskin", "dry", "dullness", "party"]
-  },
-  {
-    id: "t2",
-    name: "Acne Control Facial",
-    benefit: "Professional acne clearing session",
-    duration: "60 mins",
-    price: "₹3,000",
-    bestFor: "Oily / Acne-prone Skin",
-    badge: "Recommended For You",
-    imageUrl: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=800",
-    tags: ["acne", "oily", "sensitive", "hormonal_acne", "oily_pores"]
-  },
-  {
-    id: "t3",
-    name: "Bridal Glow Package",
-    benefit: "Complete bridal skincare prep",
-    duration: "3 hours",
-    price: "₹12,000",
-    bestFor: "Brides-to-be",
-    imageUrl: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=800",
-    tags: ["wedding", "bridal", "makeover"]
-  },
-  {
-    id: "t4",
-    name: "Keratin Hair Spa",
-    benefit: "Smooth, frizz-free shiny hair",
-    duration: "90 mins",
-    price: "₹4,500",
-    bestFor: "Frizzy / Damaged Hair",
-    badge: "Popular",
+    id: "pkg1",
+    name: "Hair Botox + Keratin Ritual",
+    subtitle: "Complete frizz-control and smoothing restoration",
+    duration: "2.5 hours",
+    price: "₹6,500",
     imageUrl: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=800",
-    tags: ["frizz", "smoothhair", "dryhair", "damaged"]
+    tags: ["frizzy_hair", "damaged_hair", "frizz_free"]
   },
   {
-    id: "t5",
-    name: "Hair Strengthening Therapy",
-    benefit: "Reduces hair fall and nourishes scalp",
-    duration: "60 mins",
-    price: "₹2,800",
-    bestFor: "Thinning / Weak Hair",
-    imageUrl: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&q=80&w=800",
-    tags: ["hairfall", "thinning", "dandruff", "scalp_issues"]
-  },
-  {
-    id: "t6",
-    name: "Detan Cleanup",
-    benefit: "Instantly brightens and removes sun tan",
-    duration: "30 mins",
-    price: "₹1,500",
-    bestFor: "Sun Damaged Skin",
-    imageUrl: "https://images.unsplash.com/photo-1521590832167-7bfcfaa6362f?auto=format&fit=crop&q=80&w=800",
-    tags: ["tan", "dullness", "pigmentation", "sun_pollution"]
-  },
-  {
-    id: "t7",
-    name: "Aroma Therapy Massage",
-    benefit: "Deep relaxation with essential oils",
-    duration: "60 mins",
-    price: "₹3,500",
-    bestFor: "Stress Relief",
-    badge: "Highest Rated",
-    imageUrl: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80&w=800",
-    tags: ["relaxation", "spa", "deep_relaxation"]
-  },
-  {
-    id: "t8",
-    name: "Anti-Aging Therapy",
-    benefit: "Firms skin and reduces fine lines",
-    duration: "75 mins",
+    id: "pkg2",
+    name: "Acne Clearing + Detox Facial",
+    subtitle: "Deep pore extraction, led therapy, and hydration",
+    duration: "1.5 hours",
     price: "₹4,200",
-    bestFor: "Mature Skin",
-    imageUrl: "https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&q=80&w=800",
-    tags: ["antiaging", "finelines", "fine_lines"]
+    imageUrl: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=800",
+    tags: ["acne", "oily_scalp", "acne_free", "acne_prone"]
   },
   {
-    id: "t9",
-    name: "Nail Spa + Manicure",
-    benefit: "Luxury hand and nail care",
-    duration: "45 mins",
-    price: "₹1,200",
-    bestFor: "Grooming",
-    imageUrl: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=800",
-    tags: ["nail", "party"]
+    id: "pkg3",
+    name: "Ultimate Bridal Makeover",
+    subtitle: "Pre-wedding glowing skin & glossy hair treatment",
+    duration: "4 hours",
+    price: "₹15,000",
+    imageUrl: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=800",
+    tags: ["wedding", "bridal", "glowing_skin"]
+  },
+  {
+    id: "pkg4",
+    name: "Scalp Renewal & Hair Growth",
+    subtitle: "Nourishing therapy for fuller, thicker hair",
+    duration: "90 mins",
+    price: "₹3,500",
+    imageUrl: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&q=80&w=800",
+    tags: ["hair_fall", "thicker_hair", "thin"]
+  }
+];
+
+export const upgrades: PremiumUpgrade[] = [
+  {
+    id: "up1",
+    name: "Japanese Head Spa",
+    benefit: "Deep scalp detox and stress relief",
+    price: "₹2,500",
+    imageUrl: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80&w=800",
+    tags: ["japanese_spa", "relaxation", "stress", "hair_fall"]
+  },
+  {
+    id: "up2",
+    name: "Glass Skin Facial",
+    benefit: "Korean multi-step hydration for ultimate glow",
+    price: "₹3,500",
+    imageUrl: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=800",
+    tags: ["glass_skin", "glowing_skin", "dull_skin", "pigmentation"]
+  },
+  {
+    id: "up3",
+    name: "CBD Aromatherapy Massage",
+    benefit: "Maximum pain relief and muscle relaxation",
+    price: "₹4,000",
+    imageUrl: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=800",
+    tags: ["cbd_massage", "stress", "aroma_massage"]
   }
 ];
 
@@ -126,69 +127,88 @@ export const products: Product[] = [
     bestFor: "Dull Skin & Pigmentation",
     price: "₹1,850",
     imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=600",
-    routine: "morning"
+    tags: ["dull_skin", "pigmentation"]
   },
   {
     id: "p2",
-    name: "Sunscreen SPF 50",
-    benefit: "Broad spectrum protection",
-    bestFor: "All Skin Types",
-    price: "₹850",
-    imageUrl: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=600",
-    routine: "morning"
+    name: "Hair Growth Serum",
+    benefit: "Nourishes follicles to promote growth",
+    bestFor: "Thinning & Dry Scalps",
+    price: "₹1,650",
+    imageUrl: "https://images.unsplash.com/photo-1629198688000-71f23e745b6e?auto=format&fit=crop&q=80&w=600",
+    tags: ["hair_fall", "hair_serum"]
   },
   {
     id: "p3",
+    name: "Keratin Hair Mask",
+    benefit: "Deep conditioning weekly repair",
+    bestFor: "Frizzy & Damaged Hair",
+    price: "₹1,500",
+    imageUrl: "https://images.unsplash.com/photo-1599305090598-fe179d501227?auto=format&fit=crop&q=80&w=600",
+    tags: ["frizzy_hair", "damaged_hair", "hair_care_kit"]
+  },
+  {
+    id: "p4",
     name: "Anti-Acne Face Wash",
     benefit: "Cleanses pores and removes excess oil",
     bestFor: "Oily & Acne-Prone Skin",
     price: "₹650",
     imageUrl: "https://images.unsplash.com/photo-1556228720-192a6af4e865?auto=format&fit=crop&q=80&w=600",
-    routine: "morning"
-  },
+    tags: ["acne", "oily", "acne_prone"]
+  }
+];
+
+export const addons: AddOn[] = [
   {
-    id: "p4",
-    name: "Hydrating Moisturizer",
-    benefit: "Nightly moisture lock for barrier repair",
-    bestFor: "Dry & Normal Skin",
-    price: "₹1,200",
-    imageUrl: "https://images.unsplash.com/photo-1615397323190-67a98eb3d4d3?auto=format&fit=crop&q=80&w=600",
-    routine: "evening"
-  },
-  {
-    id: "p5",
-    name: "Under Eye Cream",
-    benefit: "Reduces dark circles & puffiness",
-    bestFor: "Tired/Stressed Eyes",
+    id: "ao1",
+    name: "Post-Facial Exfoliant",
+    benefit: "Maintain your clear skin at home",
     price: "₹900",
     imageUrl: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&q=80&w=600",
-    routine: "evening"
+    tags: ["exfoliant", "facial"]
   },
   {
-    id: "p6",
-    name: "Scalp Serum",
-    benefit: "Nourishes follicles to promote growth",
-    bestFor: "Thinning & Dry Scalps",
-    price: "₹1,650",
-    imageUrl: "https://images.unsplash.com/photo-1629198688000-71f23e745b6e?auto=format&fit=crop&q=80&w=600",
-    routine: "evening"
-  },
-  {
-    id: "p7",
-    name: "Hair Fall Control Shampoo",
-    benefit: "Strengthens roots and reduces shedding",
-    bestFor: "Thinning Hair",
-    price: "₹950",
+    id: "ao2",
+    name: "Nourishing Hair Care Kit",
+    benefit: "Prolong your smoothing treatment",
+    price: "₹2,200",
     imageUrl: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4a2d?auto=format&fit=crop&q=80&w=600",
-    routine: "weekly"
+    tags: ["hair_care_kit", "keratin", "hair_botox"]
   },
   {
-    id: "p8",
-    name: "Keratin Hair Mask",
-    benefit: "Deep conditioning weekly repair",
-    bestFor: "Frizzy Hair",
-    price: "₹1,500",
-    imageUrl: "https://images.unsplash.com/photo-1599305090598-fe179d501227?auto=format&fit=crop&q=80&w=600",
-    routine: "weekly"
+    id: "ao3",
+    name: "Luxury Silk Pillowcase",
+    benefit: "Reduces frizz and prevents fine lines",
+    price: "₹1,800",
+    imageUrl: "https://images.unsplash.com/photo-1615397323190-67a98eb3d4d3?auto=format&fit=crop&q=80&w=600",
+    tags: ["silk_pillow", "frizzy_hair", "fine_lines"]
+  }
+];
+
+export const memberships: Membership[] = [
+  {
+    id: "mem1",
+    name: "Premium Spa Membership",
+    description: "Unlimited relaxation and VIP perks designed for the ultimate self-care routine.",
+    price: "₹4,999 / month",
+    perks: [
+      "1 Signature facial or massage per month",
+      "20% off all retail products",
+      "Priority booking",
+      "Free branded luxury bathing suit"
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    id: "mem2",
+    name: "Essential Maintenance Plan",
+    description: "Perfect for busy professionals who need quick, consistent upkeep.",
+    price: "₹2,499 / month",
+    perks: [
+      "2 Blowouts or quick trims per month",
+      "10% off all clinical treatments",
+      "Complimentary scalp massage with every visit"
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=800"
   }
 ];

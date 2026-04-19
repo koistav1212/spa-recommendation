@@ -18,7 +18,7 @@ const FORM_ENTRY_IDS = {
   answers: "entry.456789012" // Replace with actual entry ID for Answers dump (optional)
 };
 
-export async function submitToGoogleForm(data: { name: string; phone: string; email: string; answers: Record<string, string> }) {
+export async function submitToGoogleForm(data: { name: string; phone: string; email: string; answers: Record<string, string | string[]> }) {
   // If you don't have a backend, you can POST directly to Google Forms using no-cors
   const formData = new FormData();
   
@@ -28,7 +28,7 @@ export async function submitToGoogleForm(data: { name: string; phone: string; em
   
   // Format answers for a single text field, or map to individual entry IDs if you created a field for each
   const answersString = Object.entries(data.answers)
-    .map(([k, v]) => `${k}: ${v}`)
+    .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(", ") : v}`)
     .join("\n");
   formData.append(FORM_ENTRY_IDS.answers, answersString);
 

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import * as Icons from "lucide-react";
 import Image from "next/image";
+import { CheckSquare, Square } from "lucide-react";
 
 interface OptionCardProps {
   id: string;
@@ -9,10 +10,11 @@ interface OptionCardProps {
   iconName?: string;
   imageUrl?: string;
   selected: boolean;
+  allowMultiple?: boolean;
   onSelect: (id: string) => void;
 }
 
-export function OptionCard({ id, label, iconName, imageUrl, selected, onSelect }: OptionCardProps) {
+export function OptionCard({ id, label, iconName, imageUrl, selected, allowMultiple, onSelect }: OptionCardProps) {
   // Dynamically pull icon with a thin, minimal 1.5 stroke width for pure elegance
   const IconComponent = iconName ? (Icons[iconName as keyof typeof Icons] as React.ElementType) : null;
 
@@ -49,11 +51,19 @@ export function OptionCard({ id, label, iconName, imageUrl, selected, onSelect }
         {label}
       </span>
       
-      {/* Subtle indicator dot instead of full outline for minimalism */}
-      <div className={cn(
-        "absolute top-3 right-3 w-2 h-2 rounded-full transition-opacity duration-300",
-        selected ? "bg-[var(--color-spa-gold-dark)] opacity-100" : "opacity-0"
-      )} />
+      {allowMultiple ? (
+        <div className={cn(
+          "absolute top-3 right-3 transition-colors duration-300",
+          selected ? "text-[var(--color-spa-gold-dark)]" : "text-gray-300"
+        )}>
+           {selected ? <CheckSquare className="w-5 h-5" /> : <Square className="w-5 h-5" />}
+        </div>
+      ) : (
+        <div className={cn(
+          "absolute top-3 right-3 w-2 h-2 rounded-full transition-opacity duration-300",
+          selected ? "bg-[var(--color-spa-gold-dark)] opacity-100" : "opacity-0"
+        )} />
+      )}
       
     </motion.button>
   );

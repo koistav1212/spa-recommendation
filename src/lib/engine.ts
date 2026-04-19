@@ -1,79 +1,104 @@
-import { treatments, products, Treatment, Product } from "./data/recommendations";
+import { packages, upgrades, products, addons, memberships, SalonPackage, PremiumUpgrade, Product, AddOn, Membership, LimitedOffer } from "./data/recommendations";
 
-export type UserProfile = Record<string, string>;
+export type UserProfile = Record<string, string | string[]>;
 
 export type RecommendationResult = {
-  topTreatments: Treatment[];
-  similarTreatments: Treatment[];
-  topProducts: Product[];
-  routine: {
-    morning: Product[];
-    evening: Product[];
-    weekly: Product[];
-  };
-  visitFrequency: string;
-  personalizedMessage: string;
+  salonPackage: SalonPackage;
+  packageReason: string;
+  premiumUpgrade: PremiumUpgrade;
+  homeCareProducts: Product[];
+  recommendedAddOn: AddOn;
+  idealMembership: Membership;
+  limitedTimeOffer: LimitedOffer;
 };
 
 export function generateRecommendations(answers: UserProfile): RecommendationResult {
-  // Extract key answers from the new 9-question scientific logic
-  const gender = answers["q1_gender"];
-  const age = answers["q2_age"];
-  const skinFeel = answers["q3_skintype"];
-  const femaleSkinCore = answers["q4_female_skin_problem"];
-  const maleSkinCore = answers["q4_male_skin_problem"];
-  const hairHealth = answers["q5_hair_concern"];
-  const pastTreatments = answers["q6_past_treatments"];
-  const environment = answers["q7_lifestyle"];
-  const goal = answers["q8_goal"];
-  
-  // Condense the core skin problem based on gender dependency
-  const primarySkinConcern = gender === "male" ? maleSkinCore : femaleSkinCore;
-
-  // Score treatments based on keyword matching
-  const scoredTreatments = treatments.map(t => {
-    let score = 0;
-    const tagMatch = (target: string | undefined) => {
-      if (target && t.tags.includes(target)) score += 2;
-    };
-
-    tagMatch(skinFeel);
-    tagMatch(primarySkinConcern);
-    tagMatch(hairHealth);
-    tagMatch(goal);
-    
-    if (environment === "sun_pollution" && t.tags.includes("tan")) score += 3;
-    if (goal === "deep_relaxation" && t.tags.includes("relaxation")) score += 3;
-
-    return { ...t, score };
-  });
-
-  const sortedTreatments = scoredTreatments.sort((a, b) => b.score - a.score);
-  const topTreatments = sortedTreatments.slice(0, 2); // Show top 2 exclusively
-  const similarTreatments = sortedTreatments.slice(2, 5); // 3 for "People Also Chose"
-  
-  // Advanced Products recommendation parsing
-  // Let's just recommend everything from our explicit 8-product database if they match routines
-  const routine = {
-    morning: products.filter(p => p.routine === "morning"),
-    evening: products.filter(p => p.routine === "evening"),
-    weekly: products.filter(p => p.routine === "weekly")
+  // Helper to check if a single answer or array of answers includes a target keyword
+  const hasKeyword = (answer: string | string[] | undefined, target: string) => {
+    if (!answer) return false;
+    if (Array.isArray(answer)) {
+      return answer.some(a => a.toLowerCase().includes(target.toLowerCase()));
+    }
+    return answer.toLowerCase().includes(target.toLowerCase());
   };
 
-  // Generate hyper-personalized copy
-  let skinCopy = "balanced";
-  if (skinFeel === "oily") skinCopy = "reactive oily";
-  if (skinFeel === "dry") skinCopy = "dry and patchy";
-  if (skinFeel === "sensitive") skinCopy = "highly sensitive";
+  // Get raw answers for matching
+  const goal = answers["q1_goal"];
+  const frustrations = answers["q2_frustrations"];
+  const event = answers["q9_event"];
+  const motivation = answers["q13_motivate"];
 
-  const message = `Based on your clinical profile, you possess ${skinCopy} skin with primary indicators of ${primarySkinConcern ? primarySkinConcern.replace('_', ' ') : 'stress'}. We've algorithmically curated a protocol exactly tailored for your needs.`;
+  // --- Score Packages ---
+  const scoredPackages = packages.map(pkg => {
+    let score = 0;
+    if (hasKeyword(goal, "frizz") && pkg.tags.includes("frizzy_hair")) score += 3;
+    if (hasKeyword(frustrations, "frizzy") && pkg.tags.includes("frizzy_hair")) score += 3;
+    if (hasKeyword(goal, "acne") && pkg.tags.includes("acne")) score += 3;
+    if (hasKeyword(frustrations, "acne") && pkg.tags.includes("acne")) score += 3;
+    if (hasKeyword(goal, "bridal") && pkg.tags.includes("bridal")) score += 4;
+    if (hasKeyword(event, "wedding") && pkg.tags.includes("wedding")) score += 4;
+    if (hasKeyword(frustrations, "hair_fall") && pkg.tags.includes("hair_fall")) score += 3;
+    return { ...pkg, score };
+  });
+  
+  const recommendedPackage = scoredPackages.sort((a, b) => b.score - a.score)[0] || packages[0];
+
+  // --- Generate Justification String ---
+  // Combine all user selected frustration keys nicely. e.g "hair_fall" -> "hair fall"
+  let frustrationText = "";
+  if (Array.isArray(frustrations)) {
+    frustrationText = frustrations.map(f => f.replace("_", " ")).join(", ");
+  } else if (typeof frustrations === "string") {
+    frustrationText = frustrations.replace("_", " ");
+  }
+
+  const packageReason = `Because you mentioned struggling with ${frustrationText || "maintenance"}, we recommend a targeted package designed to give you long-lasting clinical results safely and effectively.`;
+
+  // --- Score Premium Upgrades ---
+  const scoredUpgrades = upgrades.map(up => {
+    let score = 0;
+    if (hasKeyword(goal, "relaxation") && up.tags.includes("relaxation")) score += 3;
+    if (hasKeyword(frustrations, "stress") && up.tags.includes("stress")) score += 3;
+    if (hasKeyword(goal, "glowing") && up.tags.includes("glowing_skin")) score += 3;
+    return { ...up, score };
+  });
+  const recommendedUpgrade = scoredUpgrades.sort((a, b) => b.score - a.score)[0] || upgrades[0];
+
+  // --- Select Products ---
+  // Just select top 3 matching products simply, or all if short
+  const recommendedProducts = products.slice(0, 3); // using top 3 for brevity
+
+  // --- Select Add On ---
+  // If they mentioned wanting an exfoliant, give it to them
+  const addonAns = answers["q12_addon"];
+  let recommendedAddon = addons[0];
+  if (hasKeyword(addonAns, "care_kit")) recommendedAddon = addons.find(a => a.id === "ao2") || addons[0];
+  if (hasKeyword(addonAns, "silk_pillow")) recommendedAddon = addons.find(a => a.id === "ao3") || addons[0];
+
+  // --- Select Membership ---
+  const membershipAns = answers["q16_membership"];
+  let recommendedMembership = memberships[0]; // default premium
+  if (hasKeyword(membershipAns, "maintenance")) recommendedMembership = memberships[1];
+
+  // --- Create Mock Limited Offer based on motivation ---
+  let offerTitle = "15% Off First Visit";
+  if (hasKeyword(motivation, "consult")) offerTitle = "Free Expert Consultation";
+  if (hasKeyword(motivation, "addon")) offerTitle = "Complimentary Add-on Service";
+  
+  const limitedTimeOffer: LimitedOffer = {
+    id: "offer1",
+    title: offerTitle,
+    description: "Valid for bookings made in the next 48 hours. Show this code at the salon.",
+    code: "BEAUTY60"
+  };
 
   return {
-    topTreatments,
-    similarTreatments,
-    topProducts: products, // Return all for the full routine mapping
-    routine,
-    visitFrequency: "Monthly",
-    personalizedMessage: message
+    salonPackage: recommendedPackage,
+    packageReason,
+    premiumUpgrade: recommendedUpgrade,
+    homeCareProducts: recommendedProducts,
+    recommendedAddOn: recommendedAddon,
+    idealMembership: recommendedMembership,
+    limitedTimeOffer
   };
 }

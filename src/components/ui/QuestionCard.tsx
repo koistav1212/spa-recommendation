@@ -4,11 +4,18 @@ import { motion } from "framer-motion";
 
 interface QuestionCardProps {
   question: Question;
-  selectedValue?: string;
+  selectedValue?: string | string[];
   onSelect: (value: string) => void;
 }
 
 export function QuestionCard({ question, selectedValue, onSelect }: QuestionCardProps) {
+  const isSelected = (id: string) => {
+    if (Array.isArray(selectedValue)) {
+      return selectedValue.includes(id);
+    }
+    return selectedValue === id;
+  };
+
   return (
     <motion.div
       key={question.id}
@@ -18,9 +25,14 @@ export function QuestionCard({ question, selectedValue, onSelect }: QuestionCard
       transition={{ duration: 0.3 }}
       className="w-full max-w-xl mx-auto flex flex-col items-center"
     >
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-[var(--color-spa-dark)]">
-        {question.title}
-      </h2>
+      <div className="mb-8 w-full text-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-spa-dark)] mb-2">
+          {question.title}
+        </h2>
+        {question.allowMultiple && (
+          <p className="text-sm text-gray-500 font-medium">Select all that apply</p>
+        )}
+      </div>
       
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
         {question.options.map((option) => (
@@ -30,7 +42,8 @@ export function QuestionCard({ question, selectedValue, onSelect }: QuestionCard
             label={option.label}
             iconName={option.iconName}
             imageUrl={option.imageUrl}
-            selected={selectedValue === option.id}
+            selected={isSelected(option.id)}
+            allowMultiple={question.allowMultiple}
             onSelect={onSelect}
           />
         ))}

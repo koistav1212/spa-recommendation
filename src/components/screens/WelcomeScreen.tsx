@@ -44,7 +44,7 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-4xl md:text-6xl font-extrabold text-[var(--color-spa-dark)] mb-6 leading-tight"
         >
-          Discover Your Ultimate <br className="hidden md:block"/> Salon & Spa Routine
+          Find Your Perfect <br className="hidden md:block"/> Hair & Beauty Routine in 60 Seconds
         </motion.h1>
         
         <motion.p 
@@ -53,7 +53,7 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto"
         >
-          Take our 60-second beauty profile quiz and unlock curated treatments, home-care recommendations, and exclusive access to our premium hooks.
+          Answer a few quick questions and get a personalized treatment plan, add-ons, home-care products, and exclusive offers.
         </motion.p>
         
         <motion.button

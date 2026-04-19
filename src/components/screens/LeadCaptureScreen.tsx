@@ -4,7 +4,7 @@ import { ArrowRight, Lock } from "lucide-react";
 import { submitToGoogleForm } from "@/lib/utils";
 
 interface LeadCaptureScreenProps {
-  answers: Record<string, string>;
+  answers: Record<string, string | string[]>;
   onUnlock: () => void;
 }
 
@@ -40,10 +40,10 @@ export function LeadCaptureScreen({ answers, onUnlock }: LeadCaptureScreenProps)
         </div>
         
         <h2 className="text-2xl font-bold text-center text-[var(--color-spa-dark)] mb-2">
-          Your Beauty Profile is Ready!
+          Unlock Your Personalized Beauty Plan
         </h2>
         <p className="text-gray-500 text-center text-sm mb-8">
-          Enter your details below to unlock your personalized recommendation and exclusive offers.
+          Enter your email and phone number to see your recommended treatments, premium add-ons, home-care products, and exclusive offers.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
