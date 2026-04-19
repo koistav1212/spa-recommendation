@@ -13,6 +13,52 @@ export type Question = {
 }
 
 export const questions: Question[] = [
+ {
+  id: "q1_gender",
+  title: "1. How do you identify?",
+  options: [
+    { id: "female", label: "Female", iconName: "Venus" },
+    { id: "male", label: "Male", iconName: "Mars" },
+    { id: "non_binary", label: "Non-binary", iconName: "Sparkles" },
+    { id: "prefer_not_say", label: "Prefer not to say", iconName: "CircleSlash" }
+  ]
+},
+{
+  id: "q2_age_group",
+  title: "2. What’s your age group?",
+  options: [
+    { id: "under_18", label: "Under 18", iconName: "Baby" },
+    { id: "18_24", label: "18–24", iconName: "School" },
+    { id: "25_34", label: "25–34", iconName: "Sparkles" },
+    { id: "35_44", label: "35–44", iconName: "Briefcase" },
+    { id: "45_54", label: "45–54", iconName: "HeartHandshake" },
+    { id: "55_plus", label: "55+", iconName: "Crown" }
+  ]
+},
+{
+  id: "q3_confidence",
+  title: "3. What would make you feel most confident right now?",
+  options: [
+    { id: "better_hair", label: "Better hair", iconName: "Sparkles" },
+    { id: "clear_skin", label: "Clear glowing skin", iconName: "Sun" },
+    { id: "look_younger", label: "Looking younger", iconName: "Clock" },
+    { id: "feel_relaxed", label: "Feeling relaxed & refreshed", iconName: "Leaf" },
+    { id: "event_ready", label: "Looking amazing for an event", iconName: "Camera" },
+    { id: "pampered", label: "Feeling pampered", iconName: "Gem" }
+  ]
+},
+{
+  id: "q4_avoidance",
+  title: "4. What usually stops you from booking a salon appointment?",
+  options: [
+    { id: "too_busy", label: "I’m too busy", iconName: "Clock" },
+    { id: "too_expensive", label: "It feels too expensive", iconName: "Wallet" },
+    { id: "not_sure", label: "I’m not sure what service I need", iconName: "HelpCircle" },
+    { id: "bad_experience", label: "I had a bad past experience", iconName: "AlertTriangle" },
+    { id: "too_far", label: "Salon visits feel inconvenient", iconName: "MapPin" },
+    { id: "waiting", label: "I keep putting it off", iconName: "TimerOff" }
+  ]
+},
   {
     id: "q1_goal",
     title: "1. What’s your dream beauty result?",

@@ -2,6 +2,23 @@ import { packages, upgrades, products, addons, memberships, SalonPackage, Premiu
 
 export type UserProfile = Record<string, string | string[]>;
 
+export type FaceAnalysisData = {
+  imageUrl: string;
+  skinType: string;
+  darkCircles: boolean;
+  eyePouch: boolean;
+  acne: boolean;
+  blackheads: boolean;
+  foreheadWrinkles: boolean;
+  crowFeet: boolean;
+  eyeFineLines: boolean;
+  glabellaWrinkle: boolean;
+  nasolabialFold: boolean;
+  pores: { forehead: boolean; leftCheek: boolean; rightCheek: boolean; jaw: boolean; };
+  skinSpot: boolean;
+  mole: boolean;
+};
+
 export type RecommendationResult = {
   salonPackage: SalonPackage;
   packageReason: string;
@@ -10,9 +27,10 @@ export type RecommendationResult = {
   recommendedAddOn: AddOn;
   idealMembership: Membership;
   limitedTimeOffer: LimitedOffer;
+  clinicalFindings?: FaceAnalysisData; // Pass this to the UI
 };
 
-export function generateRecommendations(answers: UserProfile): RecommendationResult {
+export function generateRecommendations(answers: UserProfile, faceData?: FaceAnalysisData | null): RecommendationResult {
   // Helper to check if a single answer or array of answers includes a target keyword
   const hasKeyword = (answer: string | string[] | undefined, target: string) => {
     if (!answer) return false;
@@ -33,8 +51,16 @@ export function generateRecommendations(answers: UserProfile): RecommendationRes
     let score = 0;
     if (hasKeyword(goal, "frizz") && pkg.tags.includes("frizzy_hair")) score += 3;
     if (hasKeyword(frustrations, "frizzy") && pkg.tags.includes("frizzy_hair")) score += 3;
+    
+    // Manual acne checks
     if (hasKeyword(goal, "acne") && pkg.tags.includes("acne")) score += 3;
     if (hasKeyword(frustrations, "acne") && pkg.tags.includes("acne")) score += 3;
+    
+    // Automated acne priority
+    if (faceData?.acne && pkg.tags.includes("acne")) score += 5; // Higher priority for clinical detection
+    if (faceData?.darkCircles && pkg.tags.includes("glowing_skin")) score += 3;
+    if (faceData?.skinSpot && pkg.tags.includes("glowing_skin")) score += 3;
+
     if (hasKeyword(goal, "bridal") && pkg.tags.includes("bridal")) score += 4;
     if (hasKeyword(event, "wedding") && pkg.tags.includes("wedding")) score += 4;
     if (hasKeyword(frustrations, "hair_fall") && pkg.tags.includes("hair_fall")) score += 3;
@@ -99,6 +125,7 @@ export function generateRecommendations(answers: UserProfile): RecommendationRes
     homeCareProducts: recommendedProducts,
     recommendedAddOn: recommendedAddon,
     idealMembership: recommendedMembership,
-    limitedTimeOffer
+    limitedTimeOffer,
+    clinicalFindings: faceData || undefined,
   };
 }

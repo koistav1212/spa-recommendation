@@ -2,20 +2,41 @@ import { motion } from "framer-motion";
 import { RecommendationResult, UserProfile } from "@/lib/engine";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { WhatsAppCTA } from "@/components/ui/WhatsAppCTA";
-import { Sparkles, Gift, Crown, Package, Plus, CheckCircle2, Clock } from "lucide-react";
+import { Chatbot } from "@/components/ui/Chatbot";
+import { Sparkles, Gift, Crown, Package, Plus, CheckCircle2, Clock, ScanFace, Home, Calendar } from "lucide-react";
 import Image from "next/image";
 
 interface ResultScreenProps {
   result: RecommendationResult;
   answers: UserProfile;
+  onReset: () => void;
 }
 
-export function ResultScreen({ result, answers }: ResultScreenProps) {
+export function ResultScreen({ result, answers, onReset }: ResultScreenProps) {
   return (
     <div className="min-h-screen bg-[var(--color-spa-beige)] pb-32">
       {/* Header Banner */}
-      <div className="bg-[var(--color-spa-dark)] text-white pt-16 pb-20 px-4 relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-8 opacity-10">
+      <div className="bg-[var(--color-spa-dark)] text-white pt-24 pb-20 px-4 relative overflow-hidden">
+        
+        {/* Navigation Bar */}
+        <div className="absolute top-0 left-0 w-full p-4 md:px-8 z-50 flex justify-between items-center bg-white/5 backdrop-blur-md border-b border-white/10">
+          <button 
+            onClick={onReset} 
+            className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 rounded-full shadow-sm flex items-center gap-2 text-sm font-bold transition-all"
+          >
+            <Home className="w-4 h-4" /> <span className="hidden sm:inline">Home</span>
+          </button>
+          
+          <button 
+            onClick={() => window.dispatchEvent(new Event('open-booking-modal'))}
+            className="bg-[var(--color-spa-gold)] text-[var(--color-spa-dark)] px-4 sm:px-5 py-2 rounded-full text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center"
+          >
+            <Calendar className="w-4 h-4 mr-0 sm:mr-2" /> <span className="hidden sm:inline">Book Appointment</span>
+            <span className="inline sm:hidden">Book</span>
+          </button>
+        </div>
+
+        <div className="absolute top-0 right-0 p-8 opacity-10 pt-20">
           <Sparkles className="w-48 h-48" />
         </div>
         <div className="max-w-4xl mx-auto relative z-10 text-center">
@@ -32,6 +53,47 @@ export function ResultScreen({ result, answers }: ResultScreenProps) {
       </div>
 
       <div className="max-w-3xl mx-auto px-4 -mt-10 relative z-20 space-y-8">
+
+        {/* 0. Clinical Skin Report (If available) */}
+        {result.clinicalFindings && (
+          <motion.section initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }}>
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-[var(--color-spa-blue)]/30 relative overflow-hidden">
+               <div className="absolute top-0 right-0 p-4 opacity-5">
+                 <ScanFace className="w-24 h-24" />
+               </div>
+               <div className="text-[var(--color-spa-blue)] text-xs font-bold uppercase tracking-wider mb-4 flex items-center">
+                  <ScanFace className="w-4 h-4 mr-1 text-[var(--color-spa-blue)]" /> Clinical Skin Analysis
+               </div>
+               
+               <h3 className="text-xl font-bold text-[var(--color-spa-dark)] mb-4">Your AI Diagnostic Results</h3>
+               
+               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div className="bg-gray-50 rounded-2xl p-4 text-center border border-gray-100">
+                    <div className="text-xs text-gray-500 mb-1">Skin Type</div>
+                    <div className="font-bold text-[var(--color-spa-dark)]">{result.clinicalFindings.skinType}</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-2xl p-4 text-center border border-gray-100">
+                    <div className="text-xs text-gray-500 mb-1">Acne Detected</div>
+                    <div className={`font-bold ${result.clinicalFindings.acne ? 'text-red-500' : 'text-green-600'}`}>
+                      {result.clinicalFindings.acne ? "Yes" : "Clear"}
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 rounded-2xl p-4 text-center border border-gray-100">
+                    <div className="text-xs text-gray-500 mb-1">Dark Circles</div>
+                    <div className={`font-bold ${result.clinicalFindings.darkCircles ? 'text-amber-500' : 'text-green-600'}`}>
+                      {result.clinicalFindings.darkCircles ? "Present" : "Minimal"}
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 rounded-2xl p-4 text-center border border-gray-100">
+                    <div className="text-xs text-gray-500 mb-1">Pores / Spots</div>
+                    <div className={`font-bold ${result.clinicalFindings.skinSpot ? 'text-amber-500' : 'text-green-600'}`}>
+                      {result.clinicalFindings.skinSpot ? "Detected" : "Clear"}
+                    </div>
+                  </div>
+               </div>
+            </div>
+          </motion.section>
+        )}
 
         {/* 1. Recommended Package */}
         <motion.section initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
