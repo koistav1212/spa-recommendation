@@ -250,11 +250,28 @@ interface ChatMessage {
 interface ChatbotProps {
   result?: RecommendationResult | null;
   answers?: UserProfile | Record<string, string | string[]>;
+  isOpen?: boolean;
+  setIsOpen?: (isOpen: boolean) => void;
+  hasOpened?: boolean;
+  setHasOpened?: (hasOpened: boolean) => void;
 }
 
-export function Chatbot({ result = null, answers = {} }: ChatbotProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [hasOpened, setHasOpened] = useState(false); // Track if ever opened to render floating pill when closed
+export function Chatbot({ 
+  result = null, 
+  answers = {},
+  isOpen: propsIsOpen,
+  setIsOpen: propsSetIsOpen,
+  hasOpened: propsHasOpened,
+  setHasOpened: propsSetHasOpened
+}: ChatbotProps) {
+  const [localIsOpen, setLocalIsOpen] = useState(false);
+  const [localHasOpened, setLocalHasOpened] = useState(false); 
+
+  const isOpen = propsIsOpen !== undefined ? propsIsOpen : localIsOpen;
+  const setIsOpen = propsSetIsOpen || setLocalIsOpen;
+  const hasOpened = propsHasOpened !== undefined ? propsHasOpened : localHasOpened;
+  const setHasOpened = propsSetHasOpened || setLocalHasOpened;
+
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -438,36 +455,7 @@ export function Chatbot({ result = null, answers = {} }: ChatbotProps) {
 
   return (
     <>
-      {/* INLINE PILL BUTTON (If never opened) */}
-      <AnimatePresence>
-        {!isOpen && !hasOpened && result && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full my-4"
-          >
-            <button
-              onClick={handleOpen}
-              className="w-full bg-[var(--color-spa-dark)] text-white py-4 px-6 rounded-[2rem] shadow-lg flex items-center justify-between hover:bg-black transition-all border border-[var(--color-spa-gold)]/20 overflow-hidden relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
-              <div className="flex items-center gap-4 relative z-10">
-                <div className="relative">
-                  <MessageCircle className="w-6 h-6 text-[var(--color-spa-gold)]" />
-                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-[var(--color-spa-dark)]" />
-                </div>
-                <div className="text-left">
-                  <h3 className="font-bold text-sm leading-tight text-[var(--color-spa-gold)]">Ask AI Ayura</h3>
-                  <p className="text-xs text-gray-300">Got questions about your diagnosis?</p>
-                </div>
-              </div>
-              <div className="bg-[var(--color-spa-gold)]/20 text-[var(--color-spa-gold)] px-4 py-1.5 rounded-full text-xs font-bold leading-none backdrop-blur-sm relative z-10">
-                Chat Now
-              </div>
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* INLINE PILL BUTTON moved to ResultScreen */}
 
       {/* FLOATING PILL BUTTON (If was opened and then minimized OR if no result yet) */}
       <AnimatePresence>
@@ -480,7 +468,7 @@ export function Chatbot({ result = null, answers = {} }: ChatbotProps) {
             className="fixed bottom-[100px] right-6 sm:right-8 bg-[var(--color-spa-dark)] text-white py-3 px-6 rounded-full shadow-2xl flex items-center gap-3 hover:scale-105 transition-transform z-50 border border-[var(--color-spa-gold)]/30"
           >
              <MessageCircle className="w-5 h-5 text-[var(--color-spa-gold)]" />
-             <span className="font-bold text-sm tracking-wide text-[var(--color-spa-gold)]">AI Ayura</span>
+             <span className="font-bold text-sm tracking-wide text-[var(--color-spa-gold)]">Ask Ayura</span>
              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse ml-1" />
           </motion.button>
         )}

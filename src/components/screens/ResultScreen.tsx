@@ -3,16 +3,18 @@ import { RecommendationResult, UserProfile } from "@/lib/engine";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { WhatsAppCTA } from "@/components/ui/WhatsAppCTA";
 import { Chatbot } from "@/components/ui/Chatbot";
-import { Sparkles, Gift, Crown, Package, Plus, CheckCircle2, Clock, ScanFace, Home, Calendar } from "lucide-react";
+import { Sparkles, Gift, Crown, Package, Plus, CheckCircle2, Clock, ScanFace, Home, Calendar, MessageCircle } from "lucide-react";
 import Image from "next/image";
 
 interface ResultScreenProps {
   result: RecommendationResult;
   answers: UserProfile;
   onReset: () => void;
+  hasChatbotOpened?: boolean;
+  onOpenChatbot?: () => void;
 }
 
-export function ResultScreen({ result, answers, onReset }: ResultScreenProps) {
+export function ResultScreen({ result, answers, onReset, hasChatbotOpened, onOpenChatbot }: ResultScreenProps) {
   return (
     <div className="min-h-screen bg-[var(--color-spa-beige)] pb-32">
       {/* Header Banner */}
@@ -93,6 +95,38 @@ export function ResultScreen({ result, answers, onReset }: ResultScreenProps) {
                </div>
             </div>
           </motion.section>
+        )}
+
+        {/* INLINE CHATBOT PILL - Shows before it's been opened */}
+        {!hasChatbotOpened && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full"
+          >
+            <button
+              onClick={onOpenChatbot}
+              className="w-full bg-[var(--color-spa-dark)] text-white py-4 px-6 rounded-[2rem] shadow-lg flex items-center justify-between hover:bg-black transition-all border border-[var(--color-spa-gold)]/20 overflow-hidden relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
+              <div className="flex items-center gap-4 relative z-10">
+                <div className="relative">
+                  <MessageCircle className="w-6 h-6 text-[var(--color-spa-gold)]" />
+                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-[var(--color-spa-dark)]" />
+                </div>
+                <div className="text-left hidden sm:block">
+                  <h3 className="font-bold text-sm leading-tight text-[var(--color-spa-gold)]">Ask AI Ayura</h3>
+                  <p className="text-xs text-gray-300">Got questions about your diagnosis?</p>
+                </div>
+                <div className="text-left sm:hidden">
+                  <h3 className="font-bold text-sm leading-tight text-[var(--color-spa-gold)]">Ask AI Ayura</h3>
+                </div>
+              </div>
+              <div className="bg-[var(--color-spa-gold)]/20 text-[var(--color-spa-gold)] px-4 py-1.5 rounded-full text-xs font-bold leading-none backdrop-blur-sm relative z-10">
+                Chat Now
+              </div>
+            </button>
+          </motion.div>
         )}
 
         {/* 1. Recommended Package */}

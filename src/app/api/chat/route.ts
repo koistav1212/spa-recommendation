@@ -3,13 +3,15 @@
 import { NextResponse } from "next/server";
 
 async function getOpenRouterReply(messages: any[]) {
-  const models = [
-    "meta-llama/llama-3.3-70b-instruct:free",
-    "qwen/qwen-3.6-plus:free",
-    "nvidia/nemotron-3-super:free",
-    "arcee-ai/trinity-large:free",
-    "z-ai/glm-4.5-air:free"
+ const models = [
+    "openrouter/free",
+    "google/gemma-3-4b-it:free",
+    "google/gemma-3-12b-it:free",
+    "mistralai/mistral-small-3.1-24b-instruct:free",
+    "meta-llama/llama-3.1-8b-instruct",
+    "meta-llama/llama-3-8b-instruct"
   ];
+
 
   for (const model of models) {
     try {

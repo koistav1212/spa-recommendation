@@ -18,6 +18,8 @@ export default function Home() {
   const [faceData, setFaceData] = useState<FaceAnalysisData | null>(null);
   const [result, setResult] = useState<RecommendationResult | null>(null);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const [hasChatbotOpened, setHasChatbotOpened] = useState(false);
 
   useEffect(() => {
     const handleOpenBooking = () => setIsBookingOpen(true);
@@ -48,12 +50,21 @@ export default function Home() {
     setFaceData(null);
     setAnswers({});
     setCurrentStep("welcome");
+    setIsChatbotOpen(false);
+    setHasChatbotOpened(false);
   };
 
   return (
     <main className="min-h-screen bg-[var(--color-spa-beige)] font-sans antialiased text-[var(--color-spa-dark)] transition-colors duration-500 relative">
       <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
-      <Chatbot result={result} answers={answers} />
+      <Chatbot 
+        result={result} 
+        answers={answers} 
+        isOpen={isChatbotOpen}
+        setIsOpen={setIsChatbotOpen}
+        hasOpened={hasChatbotOpened}
+        setHasOpened={setHasChatbotOpened}
+      />
 
       {currentStep === "welcome" && <WelcomeScreen onStart={handleStart} />}
       
@@ -73,7 +84,16 @@ export default function Home() {
       )}
       
       {currentStep === "result" && result && (
-        <ResultScreen result={result} answers={answers} onReset={handleReset} />
+        <ResultScreen 
+          result={result} 
+          answers={answers} 
+          onReset={handleReset} 
+          hasChatbotOpened={hasChatbotOpened}
+          onOpenChatbot={() => {
+            setIsChatbotOpen(true);
+            setHasChatbotOpened(true);
+          }}
+        />
       )}
     </main>
   );
